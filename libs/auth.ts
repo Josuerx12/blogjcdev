@@ -12,32 +12,9 @@ const authOptions: NextAuthConfig = {
         password: { type: "password" },
       },
       authorize: async (credentials, req) => {
-        if (!credentials || !credentials.email || !credentials.password) {
-          throw new Error("Missing credentials");
-        }
-
-        const userFromDB = await db.user.findUnique({
-          where: {
-            email: credentials.email as string,
-          },
-        });
-
-        if (!userFromDB) {
-          throw new Error("User not found");
-        }
-
-        const verifiedUser = await compare(
-          credentials.password as string,
-          userFromDB.password
-        );
-
-        if (!verifiedUser) {
-          throw new Error("Invalid password");
-        }
-
         const user = await db.user.findUnique({
           where: {
-            id: userFromDB.id,
+            email: credentials.email as string,
           },
           select: {
             id: true,

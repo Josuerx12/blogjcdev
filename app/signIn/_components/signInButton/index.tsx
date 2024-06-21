@@ -2,10 +2,8 @@
 import Button from "@/components/button";
 import { Loader } from "lucide-react";
 import React from "react";
-import { useFormStatus } from "react-dom";
 
-const SignInButton = () => {
-  const { pending } = useFormStatus();
+const SignInButton = ({ pending }: { pending: boolean }) => {
   return (
     <Button type="submit" disabled={pending}>
       {pending ? (

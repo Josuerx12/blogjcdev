@@ -21,9 +21,6 @@ export default async function Home() {
             </Button>
           </>
         )}
-        {session?.user && (
-          <Button onClick={() => signOut} variant="neutral"></Button>
-        )}
       </div>
     </main>
   );
