@@ -13,7 +13,7 @@ const authOptions: NextAuthConfig = {
       },
       authorize: async (credentials, req) => {
         if (!credentials || !credentials.email || !credentials.password) {
-          throw new Error("Nenhuma credencial informada");
+          throw new Error("Missing credentials");
         }
 
         const userFromDB = await db.user.findUnique({
@@ -23,7 +23,7 @@ const authOptions: NextAuthConfig = {
         });
 
         if (!userFromDB) {
-          throw new Error("Nenhuma conta encontrada para o e-mail informado!");
+          throw new Error("User not found");
         }
 
         const verifiedUser = await compare(
@@ -32,7 +32,7 @@ const authOptions: NextAuthConfig = {
         );
 
         if (!verifiedUser) {
-          throw new Error("Credenciais não concidem!");
+          throw new Error("Invalid password");
         }
 
         const user = await db.user.findUnique({
@@ -58,6 +58,29 @@ const authOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    jwt({ user, token }) {
+      if (user) {
+        token.email = user.email as string;
+        token.name = user.name as string;
+        token.role = user.role;
+        token.lastName = user.lastName;
+        token.id = user.id as string;
+      }
+
+      return token;
+    },
+    session({ token, session }) {
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.lastName = token.lastName;
+      session.user.email = token.email;
+      session.user.role = token.role;
+
+      return session;
+    },
+  },
 };
 
 export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);
