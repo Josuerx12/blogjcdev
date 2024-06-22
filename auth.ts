@@ -1,5 +1,4 @@
-import { db } from "@/providers/db";
-import { compare } from "bcrypt";
+import { findUserByEmail } from "@/services/auth";
 import { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -12,25 +11,15 @@ const authOptions: NextAuthConfig = {
         password: { type: "password" },
       },
       authorize: async (credentials, req) => {
-        const user = await db.user.findUnique({
-          where: {
-            email: credentials.email as string,
-          },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            lastName: true,
-            createdAt: true,
-            role: true,
-            updatedAt: true,
-          },
-        });
-
+        const user = await findUserByEmail(credentials.email as string);
         return user;
       },
     }),
   ],
+};
+
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  ...authOptions,
   session: {
     strategy: "jwt",
   },
@@ -58,6 +47,4 @@ const authOptions: NextAuthConfig = {
       return session;
     },
   },
-};
-
-export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);
+});

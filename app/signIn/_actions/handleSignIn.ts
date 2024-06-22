@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/libs/auth";
+import { signIn } from "@/auth";
 import { db } from "@/providers/db";
 import { compare } from "bcrypt";
 
