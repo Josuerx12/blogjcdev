@@ -1,10 +1,15 @@
 import InputWithLabel from "@/components/inputWithLabel";
 import React from "react";
 import SignUpButton from "../signUpButton";
+import { handleSignUp } from "../../_actions/handleSignUp";
 
 const SignUpForm = () => {
   return (
-    <form className="flex flex-col gap-4 my-4">
+    <form
+      method="POST"
+      action={handleSignUp}
+      className="flex flex-col gap-4 my-4"
+    >
       <InputWithLabel
         label="Nome"
         type="text"

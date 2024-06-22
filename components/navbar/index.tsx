@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Button from "../button";
-import { CircleX, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <>
       <header className="bg-neutral-900 text-white h-24 px-10 flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Blog Do JCDEV</h2>
+        <h2 className="text-2xl font-bold">Blog JCDEV</h2>
 
         <nav className="hidden sm:flex gap-2 items-center">
           <Link href="/">Inicio</Link>
