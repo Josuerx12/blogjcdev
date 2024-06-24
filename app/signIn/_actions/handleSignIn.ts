@@ -2,44 +2,45 @@
 
 import { signIn } from "@/auth";
 import { db } from "@/providers/db";
-import { compare } from "bcrypt";
+import { signInUserSchema } from "@/schemas/auth-schema";
+import { compare } from "bcryptjs";
+import { redirect } from "next/navigation";
 
-export async function handleSignIn(credentials: {
-  email: string;
-  password: string;
-}) {
+export async function handleSignIn(
+  prevState: any,
+  form: FormData
+): Promise<any> {
   try {
-    if (!credentials || !credentials.email || !credentials.password) {
-      throw new Error("Todos os dados de login devem ser preenchidos");
+    const result = signInUserSchema.safeParse({
+      email: form.get("email"),
+      password: form.get("password"),
+    });
+
+    if (result.error) {
+      throw result.error.format();
     }
 
     const userFromDB = await db.user.findUnique({
       where: {
-        email: credentials.email as string,
+        email: result.data?.email,
       },
     });
 
     if (!userFromDB) {
-      throw new Error("Credenciais invalidas!");
+      throw { generic: "Credenciais invalidas!" };
     }
 
     const verifiedUser = await compare(
-      credentials.password as string,
+      result.data.password,
       userFromDB.password
     );
 
     if (!verifiedUser) {
-      throw new Error("Credenciais invalidas!");
+      throw { generic: "Credenciais invalidas!" };
     }
 
-    const formData = new FormData();
-    formData.append("email", credentials.email);
-    formData.append("password", credentials.password);
-
-    await signIn("credentials", { formData, redirect: false });
-
-    return { message: "Login realizado com sucesso!", error: null };
-  } catch (error: any) {
-    return { message: "Falha ao realizar autenticação", error: error.message };
+    await signIn("credentials", form);
+  } catch (error) {
+    return error;
   }
 }

@@ -11,6 +11,8 @@ const authOptions: NextAuthConfig = {
         password: { type: "password" },
       },
       authorize: async (credentials, req) => {
+        console.log(credentials.email);
+
         const user = await findUserByEmail(credentials.email as string);
         return user;
       },

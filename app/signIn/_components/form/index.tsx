@@ -1,71 +1,54 @@
 "use client";
 import InputWithLabel from "@/components/inputWithLabel";
-import React, { FormEvent, useState } from "react";
+import React from "react";
 import SignInButton from "../signInButton";
+import { useFormState } from "react-dom";
 import { handleSignIn } from "../../_actions/handleSignIn";
-import toast from "react-hot-toast";
+
+type SignActionError = {
+  email?: { _errors: string[] };
+  password?: { _errors: string[] };
+  generic?: string;
+};
 
 const SignInForm = () => {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
-  const [payload, setPayload] = useState<{
-    isLoading: boolean;
-    error: null | string;
-  }>({
-    isLoading: false,
-    error: null,
-  });
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setPayload((prev) => ({ ...prev, isLoading: true }));
-
-    const res = await handleSignIn(credentials);
-    if (res.error) {
-      toast.error(res.message);
-    } else {
-      toast.success(res.message);
-    }
-
-    setPayload((prev) => ({ ...prev, isLoading: false, error: res.error }));
-  }
+  const [err, formAction] = useFormState<SignActionError | null, FormData>(
+    handleSignIn,
+    null
+  );
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 my-4">
+    <form
+      method="POST"
+      action={formAction}
+      className="flex flex-col gap-4 my-4"
+    >
       <InputWithLabel
         label="E-mail"
         type="email"
-        onChange={(e) =>
-          setCredentials((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-          }))
-        }
-        required
         name="email"
         placeholder="johndoe@gmail.com"
       />
+      {err?.email && (
+        <p className="text-red-600 font-semibold">
+          {err.email._errors.flatMap((err) => err)}
+        </p>
+      )}
       <InputWithLabel
         type="password"
         label="Senha"
-        onChange={(e) =>
-          setCredentials((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-          }))
-        }
-        required
         name="password"
         placeholder="******"
       />
-      {payload?.error && (
-        <p className="text-sm bg-red-800 p-2 w-fit mx-auto rounded-md text-white">
-          <b className="font-bold">Error:</b> {payload.error}
+      {err?.password && (
+        <p className="text-red-600 font-semibold">
+          {err.password._errors.flatMap((err) => err)}
         </p>
       )}
-      <SignInButton pending={payload.isLoading} />
+      {err?.generic && (
+        <p className="w-full p-2 bg-red-950 text-red-500">{err.generic}</p>
+      )}
+      <SignInButton />
     </form>
   );
 };

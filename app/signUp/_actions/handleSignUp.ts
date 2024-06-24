@@ -2,21 +2,45 @@
 
 import { db } from "@/providers/db";
 import { registerUserSchema } from "@/schemas/auth-schema";
+import { hash } from "bcryptjs";
 
-export async function handleSignUp(credentials: FormData) {
+export async function handleSignUp(
+  prevState: any,
+  credentials: FormData
+): Promise<any> {
   try {
-    const result = registerUserSchema.safeParse(credentials);
+    const result = registerUserSchema.safeParse({
+      name: credentials.get("name"),
+      lastName: credentials.get("lastName"),
+      email: credentials.get("email"),
+      password: credentials.get("password"),
+    });
 
     if (result.error) {
       throw result.error.format();
     }
 
+    const userExists = await db.user.findUnique({
+      where: {
+        email: result.data.email,
+      },
+    });
+
+    if (userExists) {
+      throw {
+        generic:
+          "Usuário com e-mail informado já cadastrado no banco de dados!",
+      };
+    }
+
     if (result.success) {
+      const passHash = await hash(result.data.password, 10);
+
       await db.user.create({
-        data: result.data,
+        data: { ...result.data, password: passHash },
       });
     }
   } catch (error) {
-    console.log("Errors: " + JSON.stringify(error));
+    return error;
   }
 }

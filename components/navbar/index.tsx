@@ -4,9 +4,13 @@ import React, { useState } from "react";
 import Button from "../button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data } = useSession();
+
   return (
     <>
       <header className="bg-neutral-900 text-white h-24 px-10 flex items-center justify-between">
@@ -17,12 +21,20 @@ const Navbar = () => {
 
           <Link href="/posts">Posts</Link>
 
-          <Button variant="neutral">
-            <Link href="/signIn">Login</Link>
-          </Button>
-          <Button variant="primary">
-            <Link href="/signUp">Cadastre-se</Link>
-          </Button>
+          {!data?.user ? (
+            <>
+              <Button variant="neutral">
+                <Link href="/signIn">Login</Link>
+              </Button>
+              <Button variant="primary">
+                <Link href="/signUp">Cadastre-se</Link>
+              </Button>
+            </>
+          ) : (
+            <Button variant="danger" onClick={() => signOut()}>
+              Sair
+            </Button>
+          )}
         </nav>
         <button
           onClick={() => setIsOpen((prev) => !prev)}
@@ -53,16 +65,24 @@ const Navbar = () => {
             Posts
           </Link>
 
-          <Button variant="neutral">
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/signIn">
-              Login
-            </Link>
-          </Button>
-          <Button variant="primary">
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/signUp">
-              Cadastre-se
-            </Link>
-          </Button>
+          {!data?.user ? (
+            <>
+              <Button variant="neutral">
+                <Link onClick={() => setIsOpen((prev) => !prev)} href="/signIn">
+                  Login
+                </Link>
+              </Button>
+              <Button variant="primary">
+                <Link onClick={() => setIsOpen((prev) => !prev)} href="/signUp">
+                  Cadastre-se
+                </Link>
+              </Button>
+            </>
+          ) : (
+            <Button onClick={() => signOut()} variant="danger">
+              Sair
+            </Button>
+          )}
         </div>
       </nav>
     </>
