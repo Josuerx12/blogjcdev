@@ -17,11 +17,11 @@ const SignInPage = () => {
 
         <div>
           <p>
-            Ainda não possui uma conta?{" "}
+            Ainda não possui uma conta?
             <Link href="/signUp" className="text-blue-600">
               Cadastre-se
-            </Link>{" "}
-            para ter acesso total ao{" "}
+            </Link>
+            para ter acesso total ao
             <span className="font-semibold">Blog do JCDEV</span>.
           </p>
         </div>

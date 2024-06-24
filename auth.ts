@@ -3,7 +3,7 @@ import { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const authOptions: NextAuthConfig = {
+export const authOptions: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       credentials: {
@@ -11,8 +11,6 @@ const authOptions: NextAuthConfig = {
         password: { type: "password" },
       },
       authorize: async (credentials, req) => {
-        console.log(credentials.email);
-
         const user = await findUserByEmail(credentials.email as string);
         return user;
       },
