@@ -1,18 +1,21 @@
 import { findUserByEmail } from "@/services/auth";
 import { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import credentials from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthConfig = {
   providers: [
-    CredentialsProvider({
+    credentials({
       credentials: {
-        email: { type: "email" },
-        password: { type: "password" },
+        email: {},
       },
       authorize: async (credentials, req) => {
-        const user = await findUserByEmail(credentials.email as string);
-        return user;
+        try {
+          const user = await findUserByEmail(credentials.email as string);
+          return user;
+        } catch (error) {
+          return null;
+        }
       },
     }),
   ],
@@ -47,4 +50,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  pages: {
+    signIn: "/signIn",
+  },
 });
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};
