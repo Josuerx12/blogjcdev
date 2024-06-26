@@ -13,7 +13,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-neutral-900 text-white h-24 px-10 flex items-center justify-between">
+      <header className=" w-full bg-neutral-900 text-white h-24 px-10 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Blog JCDEV</h2>
 
         <nav className="hidden sm:flex gap-2 items-center">
@@ -38,7 +38,7 @@ const Navbar = () => {
         </nav>
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="sm:hidden z-50 bg-neutral-700 p-2 rounded-full duration-300 fixed right-10"
+          className="sm:hidden z-50 bg-neutral-700 p-2 rounded-full duration-300"
         >
           {isOpen ? <X /> : <Menu />}
         </button>

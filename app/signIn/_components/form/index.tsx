@@ -3,7 +3,7 @@ import InputWithLabel from "@/components/inputWithLabel";
 import React from "react";
 import SignInButton from "../signInButton";
 import { useFormState } from "react-dom";
-import { handleSignIn } from "../../_actions/handleSignIn";
+import { signInAction } from "../../_actions/signIn";
 
 type SignActionError = {
   email?: { _errors: string[] };
@@ -13,16 +13,12 @@ type SignActionError = {
 
 const SignInForm = () => {
   const [err, formAction] = useFormState<SignActionError | null, FormData>(
-    handleSignIn,
+    signInAction,
     null
   );
 
   return (
-    <form
-      method="POST"
-      action={formAction}
-      className="flex flex-col gap-4 my-4"
-    >
+    <form action={formAction} className="flex flex-col gap-4 my-4">
       <InputWithLabel
         label="E-mail"
         type="email"

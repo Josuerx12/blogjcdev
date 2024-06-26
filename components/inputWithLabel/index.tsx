@@ -1,3 +1,4 @@
+"use client";
 import React, { ComponentProps } from "react";
 import Input from "../input";
 
@@ -8,7 +9,7 @@ interface InputProps extends ComponentProps<"input"> {
 const InputWithLabel = (props: InputProps) => {
   return (
     <label
-      className="flex flex-col gap-2 w-full text-start"
+      className="flex flex-col gap-2 w-full text-start outline-none"
       htmlFor={props.name}
     >
       <span className="text-sm font-bold">{props.label}</span>

@@ -15,12 +15,12 @@ const Dialog = ({ children, title, isOpen, handleClose }: Props) => {
     <div
       className={`fixed ${
         isOpen ? "flex" : "hidden"
-      } z-20 justify-center items-center inset-0 bg-black/40 overflow-y-auto w-screen h-screen`}
+      } z-10 justify-center items-start inset-0 bg-black/80 overflow-y-auto w-screen h-screen`}
     >
-      <div className="w-9/12 p-2">
-        <div className="flex justify-between items-center">
-          <h5>{title}</h5>
-          <button onClick={handleClose}>
+      <div className="md:w-7/12 w-11/12 mt-40 p-2 z-50 bg-white border rounded">
+        <div className="flex justify-between items-center border-b border-neutral-400 pb-2">
+          <h5 className="text-2xl font-bold">{title}</h5>
+          <button title="Fechar Modal" onClick={handleClose}>
             <X />
           </button>
         </div>

@@ -3,7 +3,7 @@ import InputWithLabel from "@/components/inputWithLabel";
 import React, { useActionState } from "react";
 import SignUpButton from "../signUpButton";
 import { useFormState } from "react-dom";
-import { handleSignUp } from "../../_actions/handleSignUp";
+import { signUpAction } from "../../_actions/signUp";
 
 type SignUpErrors = {
   name?: { _errors: string[] };
@@ -15,22 +15,12 @@ type SignUpErrors = {
 
 const SignUpForm = () => {
   const [err, formAction] = useFormState<SignUpErrors | null, FormData>(
-    handleSignUp,
+    signUpAction,
     null
   );
   return (
-    <form
-      method="POST"
-      action={formAction}
-      className="flex flex-col gap-4 my-4"
-    >
-      <InputWithLabel
-        label="Nome"
-        type="text"
-        required
-        name="name"
-        placeholder="John"
-      />
+    <form action={formAction} className="flex flex-col gap-4 my-4">
+      <InputWithLabel label="Nome" type="text" name="name" placeholder="John" />
       {err?.name && (
         <p className="text-red-600 font-semibold">
           {err.name._errors.flatMap((err) => err)}
@@ -39,7 +29,6 @@ const SignUpForm = () => {
       <InputWithLabel
         label="Sobrenome"
         type="text"
-        required
         name="lastName"
         placeholder="Doe"
       />
@@ -51,7 +40,6 @@ const SignUpForm = () => {
       <InputWithLabel
         label="E-mail"
         type="email"
-        required
         name="email"
         placeholder="johndoe@gmail.com"
       />
