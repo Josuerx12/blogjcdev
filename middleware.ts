@@ -15,7 +15,11 @@ export default auth(async (req) => {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
-  if (!session && nextUrl.pathname === "/") {
+  if (
+    !session &&
+    (nextUrl.pathname === "/usuario/posts" ||
+      nextUrl.pathname === "/usuario/perfil")
+  ) {
     return NextResponse.redirect(new URL("/signIn", req.url));
   }
 });
