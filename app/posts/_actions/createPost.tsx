@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth";
+import { auth } from "@/auth";
 import { db } from "@/providers/db";
 import { newPostSchema } from "@/schemas/posts-schema";
 import { revalidatePath } from "next/cache";
@@ -18,10 +18,17 @@ export async function createPostAction(
   form: FormData
 ): Promise<ActionErrors | null> {
   try {
+    const session = await auth();
+
+    if (!session) {
+      throw {
+        generic: "Nenhum usuário conectado, não é possivel criar um novo post!",
+      };
+    }
+
     const result = newPostSchema.safeParse({
       title: form.get("title"),
       body: form.get("body"),
-
       tagList: form.get("tags"),
     });
 
@@ -31,11 +38,12 @@ export async function createPostAction(
 
     const tags = result.data.tagList.trim().split(",");
 
-    await db.posts.create({
+    await db.post.create({
       data: {
         ...result.data,
         tagList: tags,
         image: "https://i.imgur.com/t2m6dmF.jpeg",
+        UserId: session.user.id,
       },
     });
 
