@@ -56,34 +56,42 @@ const Navbar = () => {
         </button>
       </header>
       <nav
-        className={`fixed h-screen w-full flex flex-col justify-center align-center ease-linear duration-300 bg-black text-white ${
+        className={`fixed h-screen w-full z-40 flex flex-col justify-center align-center ease-linear duration-300 bg-black text-white ${
           isOpen ? "top-0" : "-top-[110%] "
         }`}
       >
         <div className="flex flex-col w-11/12 mx-auto gap-2 items-center">
           <Link
+            className="flex gap-2 items-center"
             onClick={() => setIsOpen((prev) => !prev)}
-            className="w-fit"
             href="/"
           >
-            <Home /> Inicio
+            <Home size={15} /> Inicio
           </Link>
 
           <Link
             onClick={() => setIsOpen((prev) => !prev)}
-            className="w-fit"
+            className="flex gap-2 items-center"
             href="/posts"
           >
-            <Rss /> Feed de Posts
+            <Rss size={15} /> Feed de Posts
           </Link>
 
           {!data?.user ? (
             <>
-              <Link onClick={() => setIsOpen((prev) => !prev)} href="/signIn">
+              <Link
+                className="flex gap-2 items-center bg-neutral-200 hover:bg-opacity-70 duration-200 font-semibold text-neutral-900 p-1 rounded-md"
+                onClick={() => setIsOpen((prev) => !prev)}
+                href="/signIn"
+              >
                 Login
               </Link>
 
-              <Link onClick={() => setIsOpen((prev) => !prev)} href="/signUp">
+              <Link
+                className="flex gap-2 items-center bg-neutral-500 font-semibold hover:bg-opacity-70 duration-200 text-white p-1 rounded-md"
+                onClick={() => setIsOpen((prev) => !prev)}
+                href="/signUp"
+              >
                 Cadastre-se
               </Link>
             </>
