@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Button from "../button";
-import { Menu, X } from "lucide-react";
+import { Home, LogIn, LogOut, Menu, Rss, UserPlus, X } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { auth } from "@/auth";
@@ -18,20 +18,32 @@ const Navbar = () => {
       <header className=" w-full bg-neutral-900 text-white h-24 px-10 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Blog JCDEV</h2>
 
-        <nav className="hidden sm:flex gap-2 items-center">
-          <Link href="/">Inicio</Link>
+        <nav className="hidden sm:flex gap-5 items-center">
+          <Link className="flex gap-2 items-center" href="/">
+            <Home size={15} /> Inicio
+          </Link>
 
-          <Link href="/posts">Posts</Link>
+          <Link className="flex gap-2 items-center" href="/posts">
+            <Rss size={15} />
+            Feed de Posts
+          </Link>
 
           {!data?.user ? (
-            <>
-              <Button variant="neutral">
-                <Link href="/signIn">Login</Link>
-              </Button>
-              <Button variant="primary">
-                <Link href="/signUp">Cadastre-se</Link>
-              </Button>
-            </>
+            <div className="gap-4 flex ">
+              <Link
+                className="flex gap-2 items-center bg-neutral-200 hover:bg-opacity-70 duration-200 font-semibold text-neutral-900 p-1 rounded-md"
+                href="/signIn"
+              >
+                Login <LogIn size={15} />
+              </Link>
+
+              <Link
+                className="flex gap-2 items-center bg-neutral-500 font-semibold hover:bg-opacity-70 duration-200 text-white p-1 rounded-md"
+                href="/signUp"
+              >
+                Cadastre-se <UserPlus size={15} />
+              </Link>
+            </div>
           ) : (
             <UserButton />
           )}
@@ -54,7 +66,7 @@ const Navbar = () => {
             className="w-fit"
             href="/"
           >
-            Inicio
+            <Home /> Inicio
           </Link>
 
           <Link
@@ -62,21 +74,18 @@ const Navbar = () => {
             className="w-fit"
             href="/posts"
           >
-            Posts
+            <Rss /> Feed de Posts
           </Link>
 
           {!data?.user ? (
             <>
-              <Button variant="neutral">
-                <Link onClick={() => setIsOpen((prev) => !prev)} href="/signIn">
-                  Login
-                </Link>
-              </Button>
-              <Button variant="primary">
-                <Link onClick={() => setIsOpen((prev) => !prev)} href="/signUp">
-                  Cadastre-se
-                </Link>
-              </Button>
+              <Link onClick={() => setIsOpen((prev) => !prev)} href="/signIn">
+                Login
+              </Link>
+
+              <Link onClick={() => setIsOpen((prev) => !prev)} href="/signUp">
+                Cadastre-se
+              </Link>
             </>
           ) : (
             <UserButton />

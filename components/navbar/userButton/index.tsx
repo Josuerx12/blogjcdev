@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button";
 import { ArrowBigDownIcon, Rss, User2 } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -36,19 +36,25 @@ const UserButton = () => {
       >
         <h3 className="text-center font-bold">Detalhes</h3>
         <Link
+          onClick={() => setIsOpen(false)}
           className="flex justify-between gap-4 text-nowrap"
-          href={"/profile"}
+          href={"/usuario/perfil"}
         >
           Perfil do Usuário <User2 />
         </Link>
         <Link
+          onClick={() => setIsOpen(false)}
           className="flex justify-between gap-4 text-nowrap"
-          href={`/${data?.user.id}/posts`}
+          href="/usuario/posts"
         >
           Meus Posts <Rss />
         </Link>
         <hr className="border-b border-black" />
-        <Button variant="danger" style={{ width: "100%" }}>
+        <Button
+          onClick={() => signOut()}
+          variant="danger"
+          style={{ width: "100%" }}
+        >
           Sair
         </Button>
       </div>
