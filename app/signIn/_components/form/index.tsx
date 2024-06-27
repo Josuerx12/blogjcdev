@@ -4,11 +4,14 @@ import React from "react";
 import SignInButton from "../signInButton";
 import { useFormState } from "react-dom";
 import { signInAction } from "../../_actions/signIn";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 type SignActionError = {
   email?: { _errors: string[] };
   password?: { _errors: string[] };
   generic?: string;
+  success?: boolean;
 };
 
 const SignInForm = () => {
@@ -16,6 +19,11 @@ const SignInForm = () => {
     signInAction,
     null
   );
+
+  if (err?.success) {
+    window.location.reload();
+    redirect("/");
+  }
 
   return (
     <form action={formAction} className="flex flex-col gap-4 my-4">

@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { auth } from "@/auth";
+import UserButton from "./userButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,9 +33,7 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
-            <Button variant="danger" onClick={() => signOut()}>
-              Sair
-            </Button>
+            <UserButton />
           )}
         </nav>
         <button
@@ -45,7 +45,7 @@ const Navbar = () => {
       </header>
       <nav
         className={`fixed h-screen w-full flex flex-col justify-center align-center ease-linear duration-300 bg-black text-white ${
-          isOpen ? "top-0" : "-top-full"
+          isOpen ? "top-0" : "-top-[110%] "
         }`}
       >
         <div className="flex flex-col w-11/12 mx-auto gap-2 items-center">
@@ -79,9 +79,7 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
-            <Button onClick={() => signOut()} variant="danger">
-              Sair
-            </Button>
+            <UserButton />
           )}
         </div>
       </nav>

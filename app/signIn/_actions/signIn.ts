@@ -4,7 +4,6 @@ import { signIn } from "@/auth";
 import { db } from "@/providers/db";
 import { signInUserSchema } from "@/schemas/auth-schema";
 import { compare } from "bcryptjs";
-import { redirect } from "next/navigation";
 
 export async function signInAction(
   prevState: any,
@@ -43,6 +42,7 @@ export async function signInAction(
       email: result.data.email,
       redirect: false,
     });
+    return { success: true };
   } catch (error) {
     return error;
   }

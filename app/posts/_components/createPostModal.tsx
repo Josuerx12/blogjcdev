@@ -37,7 +37,7 @@ const CreatePostModal = ({ handleClose, isOpen }: Props) => {
         Preencha os campos para adicionar novo post ao Blog JC DEV
       </h3>
 
-      <form className="flex flex-col gap-4" action={formAction} method="POST">
+      <form className="flex flex-col gap-4" action={formAction}>
         <InputWithLabel label="Titulo" name="title" />
         {err?.title && (
           <p className="text-red-600 font-semibold">

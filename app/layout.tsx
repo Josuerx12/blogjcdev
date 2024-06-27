@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "@/components/providers/AuthProvider";
 import Navbar from "@/components/navbar";
 import ToastProvider from "@/components/providers/ToastProvider";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,18 +31,19 @@ export const metadata: Metadata = {
   category: "blog",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
+        <SessionProvider session={session} refetchOnWindowFocus>
           <Navbar />
-          <ToastProvider>{children} </ToastProvider>
-        </AuthProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </SessionProvider>
       </body>
     </html>
   );
