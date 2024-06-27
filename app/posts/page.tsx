@@ -4,7 +4,7 @@ import ButtonActions from "./_components/buttonActions";
 import PostCard from "@/components/postCard";
 
 const Posts = async () => {
-  const posts = await db.posts.findMany();
+  const posts = await db.post.findMany();
 
   return (
     <section className="w-10/12 mx-auto">
