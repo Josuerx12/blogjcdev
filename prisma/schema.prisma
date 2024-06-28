@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  name     String
-  email    String @unique
-  lastName String
-  password String
-  role     String @default("user")
+  id            String  @id @default(cuid())
+  name          String
+  email         String  @unique
+  profilePicKey String?
+  profilePic    String?
+  lastName      String
+  password      String
+  role          String  @default("user")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -26,11 +28,12 @@ model User {
 }
 
 model Post {
-  id      String   @id @default(uuid())
-  title   String
-  body    String
-  image   String
-  tagList String[] @default([])
+  id       String   @id @default(uuid())
+  title    String
+  body     String
+  image    String
+  imageKey String?
+  tagList  String[] @default([])
 
   User   User   @relation(fields: [UserId], references: [id])
   UserId String

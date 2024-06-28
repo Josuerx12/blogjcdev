@@ -1,7 +1,7 @@
 "use client";
 import Dialog from "@/components/dialog";
 import InputWithLabel from "@/components/inputWithLabel";
-import React from "react";
+import React, { useRef } from "react";
 import { useFormState } from "react-dom";
 import CreatePostButton from "./createPostButton";
 import { createPostAction } from "../_actions/createPost";
@@ -21,14 +21,16 @@ type ActionErrors = {
 };
 
 const CreatePostModal = ({ handleClose, isOpen }: Props) => {
+  const ref = useRef<HTMLFormElement>(null);
   const [err, formAction] = useFormState<ActionErrors | null, FormData>(
     createPostAction,
     null
   );
 
   if (err?.success) {
-    toast.success("Post criado com sucesso!");
     handleClose();
+    ref.current?.reset();
+    toast.success("Post adicionado com sucesso!");
   }
 
   return (
@@ -37,7 +39,7 @@ const CreatePostModal = ({ handleClose, isOpen }: Props) => {
         Preencha os campos para adicionar novo post ao Blog JC DEV
       </h3>
 
-      <form className="flex flex-col gap-4" action={formAction}>
+      <form ref={ref} className="flex flex-col gap-4" action={formAction}>
         <InputWithLabel label="Titulo" name="title" />
         {err?.title && (
           <p className="text-red-600 font-semibold">
@@ -59,6 +61,7 @@ const CreatePostModal = ({ handleClose, isOpen }: Props) => {
         <InputWithLabel
           label="Imagens"
           type="file"
+          name="images"
           accept="image/png, image/gif, image/jpeg"
         />
 

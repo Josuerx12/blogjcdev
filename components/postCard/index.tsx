@@ -5,15 +5,15 @@ import Image from "next/image";
 const PostCard = ({ post }: { post: IPost }) => {
   return (
     <div
-      className="bg-neutral-200 shadow shadow-black rounded-md p-2"
+      className="bg-neutral-200 max-w-lg w-full shadow shadow-black rounded-md p-2"
       key={post.id}
     >
       <h3 className="text-center text-2xl font-bold my-3">{post.title}</h3>
       <Image
         src={post.image}
-        className="w-full h-[400px] object-contain"
-        width={100}
-        height={100}
+        className="w-full aspect-auto object-contain"
+        width={1920}
+        height={1080}
         alt={`Imagem do post: ${post.title}`}
       />
       <p>
@@ -29,6 +29,13 @@ const PostCard = ({ post }: { post: IPost }) => {
           </span>
         ))}
       </p>
+
+      <form></form>
+
+      <div>
+        <h6>Comentarios</h6>
+        <div></div>
+      </div>
     </div>
   );
 };
